@@ -35,7 +35,7 @@ export default class MarkdownViewerData {
 
   /*------------------------------- ACTION INTERPRETATION --------------------------------------*/
 
-  getInterpretation(value) {
+  getInterpretation(gudhub, value) {
     
     return [{
       id: 'default',
