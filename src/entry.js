@@ -1,9 +1,7 @@
 import './js/markdown-viewer-webcomponent.js';
 
 export default class MarkdownViewerData {
-	constructor() {
-
-	}
+	
   /*------------------------------- FIELD TEMPLATE --------------------------------------*/
   getTemplate() {
     return {
@@ -35,7 +33,7 @@ export default class MarkdownViewerData {
 
   /*------------------------------- ACTION INTERPRETATION --------------------------------------*/
 
-  getInterpretation(gudhub, value) {
+  getInterpretation(gudhub, value, appId, itemId, field_model) {
     
     return [{
       id: 'default',
@@ -80,22 +78,7 @@ angular.module('markdownViewerData', [])
 
     getInterpretation: function (value) {
       return markdownViewerData.getInterpretation(value);
-    },
-    /*------------------------------- WINDOW HTML TEMPLATE --------------------------------------*/
-    getWindowHTML: function(scope) {
-      var deferred = $q.defer();
-
-      deferred.resolve('');
-
-      return deferred.promise;
-    },
-
-    /*------------------------------- ACTION SCOPE --------------------------------------*/
-    getActionScope: function(scope) {},
-
-    /*----------------------------- RUN ACTION -------------------------*/
-    runAction: function(scope){
-      return '';
     }
+    
   };
 });
