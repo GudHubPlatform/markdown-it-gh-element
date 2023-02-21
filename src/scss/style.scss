@@ -33,6 +33,13 @@ gh-markdown-viewer {
   word-wrap: break-word;
 }
 
+.markdown-body.md-body {
+  height: auto;
+  overflow-y: auto;
+  margin-top: 0;
+  max-width: 700px;
+}
+
 .markdown-body {
   margin-top: 20px;
 }
