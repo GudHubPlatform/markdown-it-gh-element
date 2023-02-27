@@ -1,15 +1,16 @@
+import { GhHtmlElement } from '@gudhub/gh-html-element/src/GhHtmlElement.js';
 import markdownIt from 'markdown-it';
 import markdownItHighlightjs from 'markdown-it-highlightjs';
 import 'highlight.js/styles/github.css'
 import '../scss/style.scss';
+
+/********************* Open all MD links in new tab *********************/
 const markdown = new markdownIt({html: true}).use(markdownItHighlightjs);
 var defaultRender = markdown.renderer.rules.link_open || function(tokens, idx, options, env, self) {
   return self.renderToken(tokens, idx, options);
 };
 
-// Open all links in new tab
 markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
-  // If you are sure other plugins can't add `target` - drop check below
   var aIndex = tokens[idx].attrIndex('target');
 
   if (aIndex < 0) {
@@ -18,12 +19,12 @@ markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
     tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
   }
 
-  // pass token to default renderer.
+  // pass token to default renderer
   return defaultRender(tokens, idx, options, env, self);
 };
 
 /********************* EDITOR JS WEB COMPONENT CREATING *********************/
-class MarkdownViewerWeb extends HTMLElement {
+class MarkdownViewerWeb extends GhHtmlElement {
   constructor() {
     super();
     this.appId;
@@ -31,6 +32,11 @@ class MarkdownViewerWeb extends HTMLElement {
     this.fieldId;
     this.fieldValue;
     this.mode;
+
+    // Observe md variable for getting it and render in component
+    this.observe('md', () => {
+      this.renderHTML();
+    })
   }
   /********************* GET ATTRIBUTES *********************/
   // Getting attributes from component's data attributes
@@ -56,8 +62,6 @@ class MarkdownViewerWeb extends HTMLElement {
         this.getAttributes();
         if(!this.mode) {
           this.init();
-        } else {
-          this.renderHTML();
         }
       }, 0);
     }
@@ -74,14 +78,13 @@ class MarkdownViewerWeb extends HTMLElement {
   }
 
   /********************* RENDER HTML *********************/
-  // Render HTML from innerHTML
+  // Get MD from getter and render it as HTML
   renderHTML() {
-    const html = this.innerHTML.replaceAll('&gt;', '>');
-    let mdHTML = markdown.render(html);
+    const md = this.data.md.replaceAll('&gt;', '>'); // replace encoded > symbol for correct showing blockquote in markdown render lib
+    const html = markdown.render(md);
     this.innerHTML = /*html*/`
       <div class="md-component md-body markdown-body"></div>`;
-      this.querySelector(`.md-component`).innerHTML = mdHTML;
-      
+      this.querySelector(`.md-component`).innerHTML = html;
   }
 
   /********************* GET MD DATA *********************/

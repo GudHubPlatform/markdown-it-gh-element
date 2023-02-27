@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@gudhub/gh-html-element": "^1.0.2",
     "highlight.js": "^11.6.0",
     "markdown-it": "^13.0.1",
     "markdown-it-highlightjs": "^4.0.1",
