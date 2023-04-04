@@ -98,7 +98,8 @@ class MarkdownViewerWeb extends GhHtmlElement {
   // Get the markdown data from the link and convert it to html
   // Then we use innerHTML to paste markdown markup to our block
   async render(){
-    let markdownLink = await gudhub.getFieldValue(this.appId, this.itemId, this.fieldId, this.fieldValue);
+    let markdownLink = await gudhub.getFieldValue(this.appId, this.itemId, this.fieldId);
+    if(!markdownLink) return;
     let mdData = await this.getMdData(markdownLink);
     let mdHTML = markdown.render(mdData);
 
@@ -111,7 +112,7 @@ class MarkdownViewerWeb extends GhHtmlElement {
   // Start mathod "render" to update content
   async initEventListeners(){
     this.addEventListener('change', async (event) => {
-      let md = event.path[0].value;
+      let md = event.target.value;
       this.field_value = md;
       await gudhub.setFieldValue(this.appId, this.itemId, this.fieldId, this.field_value);
       this.render();
