@@ -33,7 +33,7 @@ class MarkdownViewerWeb extends GhHtmlElement {
     this.fieldValue;
     this.mode;
 
-    // Observe md variable for getting it and render in component
+    // Observe md variable for getting it and render in component - it's create for getting value from angular
     this.observe('md', () => {
       this.renderHTML();
     })
